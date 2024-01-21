@@ -1,4 +1,4 @@
-![plugin-video](https://img.shields.io/npm/v/@maisonsmd/carta-plugin-video)
+![plugin-video](https://img.shields.io/npm/v/carta-plugin-video)
 
 # carta-plugin-video
 
@@ -9,7 +9,7 @@ Inspired by [markdown-it-video](https://github.com/CenterForOpenScience/markdown
 ## Installation
 
 ```shell
-npm i @maisonsmd/carta-plugin-video
+npm i carta-plugin-video
 ```
 
 ## Setup
@@ -19,7 +19,7 @@ npm i @maisonsmd/carta-plugin-video
 Import the default theme, or create you own:
 
 ```ts
-import '@maisonsmd/carta-plugin-video/default.css';
+import 'carta-plugin-video/default.css';
 ```
 
 Note that the `align` function needs the default css to work properly.
@@ -44,8 +44,8 @@ For custom styles, this is an example of the generated HTML:
 ```svelte
 <script>
 	import { Carta, CartaEditor } from 'carta-md';
-	import { video } from '@maisonsmd/carta-plugin-video';
-	import '@maisonsmd/carta-plugin-video/default.css';
+	import { video } from 'carta-plugin-video';
+	import 'carta-plugin-video/default.css';
 
 	const carta = new Carta({
 		extensions: [

@@ -1,5 +1,5 @@
 {
-	"name": "@maisonsmd/carta-plugin-video",
+	"name": "carta-plugin-video",
 	"version": "1.0.0",
 	"type": "module",
 	"main": "./dist/index.js",
