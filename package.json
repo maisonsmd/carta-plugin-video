@@ -1,14 +1,11 @@
 {
-	"name": "carta-plugin-video",
+	"name": "@maisonsmd/carta-plugin-video",
 	"version": "1.0.0",
 	"type": "module",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"license": "MIT",
-	"author": {
-		"name": "maisonsmd",
-		"email": "maisonsmd@gmail.com"
-	},
+	"author": "maisonsmd <maisonsmd@gmail.com>",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -77,5 +74,10 @@
 		"marked editor",
 		"syntax highlighting",
 		"video"
-	]
+	],
+	"description": "This plugin adds ability to render online video from Youtube or Vimeo.",
+	"bugs": {
+		"url": "https://github.com/maisonsmd/carta-plugin-video/issues"
+	},
+	"homepage": "https://github.com/maisonsmd/carta-plugin-video#readme"
 }
