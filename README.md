@@ -23,16 +23,16 @@ Note that the `align` function needs the default css to work properly.
 For custom styles, this is an example of the generated HTML:
 
 ```HTML
-	<div class="video-container center">
-		<iframe
-				width="640"
-				height="390"
-				src="<the URL>"
-				frameborder="0"
-				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-				allowfullscreen>
-		</iframe>
-	</div>
+<div class="video-container center">
+	<iframe
+		width="640"
+		height="390"
+		src="<the URL>"
+		frameborder="0"
+		allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+		allowfullscreen>
+	</iframe>
+</div>
 ```
 
 ### Extension
