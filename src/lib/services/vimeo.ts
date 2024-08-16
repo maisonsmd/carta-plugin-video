@@ -1,5 +1,5 @@
 import type { VideoExtensionOptions } from '$lib/types';
-import { getGenericIframeHtml } from '$lib/utils';
+import { getGenericIframeNode } from '$lib/utils';
 
 /**
  * Get the Vimeo video ID from a Vimeo video URL or ID.
@@ -19,9 +19,9 @@ function getVideoId(videoIdOrUrl: string): string {
  * @param options  Vimeo options
  * @returns  HTML string
  */
-export function render(videoIdOrUrl: string, options: VideoExtensionOptions): string {
+export function render(videoIdOrUrl: string, options: VideoExtensionOptions) {
 	const videoId = getVideoId(videoIdOrUrl);
 	const url = `https://player.vimeo.com/video/${videoId}`;
 
-	return getGenericIframeHtml(url, options);
+	return getGenericIframeNode(url, options);
 }

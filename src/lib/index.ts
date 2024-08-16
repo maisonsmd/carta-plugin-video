@@ -1,8 +1,8 @@
-// Process @[youtube](youtubeVideoID)
-// Process @[vimeo](vimeoVideoID)
-
-import type { CartaExtension } from 'carta-md';
-import type { TokenizerAndRendererExtension } from 'marked';
+import type { Plugin as CartaPlugin } from 'carta-md';
+import type { Link, Node, Parent, Text } from 'mdast';
+import { toString } from 'mdast-util-to-string';
+import { findBefore } from 'unist-util-find-before';
+import { SKIP, visit, type Visitor, type VisitorResult } from 'unist-util-visit';
 
 import VideoIcon from './components/icons/VideoIcon.svelte';
 import type { VideoExtensionOptions, VideoService } from './types';
@@ -19,19 +19,55 @@ const defaultOptions: VideoExtensionOptions = {
 	allowFullscreen: true,
 };
 
-/**
- * Carta video plugin. Adds support to render embedded video.
- */
-export const video = (options?: VideoExtensionOptions): CartaExtension => {
+export const video = (options?: VideoExtensionOptions): CartaPlugin => {
 	const finalOptions = {
 		...defaultOptions,
 		...options,
 	};
 
+	const transformer = (ast: any) => {
+		const visitor: Visitor<Link, Parent> = (node: Link, index, parent): VisitorResult => {
+			if (!parent || typeof index === 'undefined') return;
+
+			const previousNode = findBefore(parent, node, (node: Node) => {
+				return node.type === 'text';
+			});
+
+			if (!previousNode) return;
+
+			const lastChar = (previousNode as Text).value.slice(-1);
+
+			if (lastChar !== '@') return;
+
+			/**
+			 * Found the whole video tag
+			 * - Remove the @ from the text node
+			 * - Replace the link node with a video node
+			 */
+
+			(previousNode as Text).value = (previousNode as Text).value.slice(0, -1);
+
+			const videoProvider = toString(node);
+			const videoIdOrUrl = node.url;
+
+			const videoNode = renderVideo(videoProvider as VideoService, videoIdOrUrl, finalOptions);
+
+			parent.children.splice(index!, 1, videoNode);
+
+			return [SKIP, index! + 1];
+		};
+
+		visit(ast, 'link', visitor);
+	};
+
 	return {
-		markedExtensions: [
+		transformers: [
 			{
-				extensions: [videoTokenizerAndRenderer(finalOptions)],
+				type: 'remark',
+				execution: 'sync',
+				transform: ({ processor }) => {
+					processor.use(() => transformer);
+				},
 			},
 		],
 		icons: [
@@ -48,34 +84,3 @@ export const video = (options?: VideoExtensionOptions): CartaExtension => {
 		],
 	};
 };
-
-function videoTokenizerAndRenderer(options: VideoExtensionOptions): TokenizerAndRendererExtension {
-	return {
-		name: 'video',
-		level: 'block',
-		start(src) {
-			// Find the first instance of @[serviceName](videoIdOrUrl)
-			return src.match(/@\[([a-zA-Z]+)\]\([\s]*(.*?)[\s]*\)/i)?.index;
-		},
-		tokenizer(src) {
-			const match = src.match(/^@\[([a-zA-Z]+)\]\([\s]*(.*?)[\s]*\)/i);
-
-			if (!match) {
-				return undefined;
-			}
-
-			const service = match[1].toLowerCase() as VideoService;
-			const videoIdOrUrl = match[2];
-
-			return {
-				type: 'video',
-				raw: match[0],
-				service,
-				videoIdOrUrl,
-			};
-		},
-		renderer(token) {
-			return renderVideo(token.service, token.videoIdOrUrl, options);
-		},
-	};
-}

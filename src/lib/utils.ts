@@ -1,3 +1,5 @@
+import type { RootContent } from 'mdast';
+
 import type { VideoExtensionOptions } from './types';
 
 function isUrl(url: string): boolean {
@@ -19,23 +21,32 @@ export function getSearchParams(url: string): Map<string, string> {
 	return params;
 }
 
-/**
- * Common HTML for all video services, if one service need a different HTML, it should be implemented in the service.
- * @param url Embed URL
- * @param options Video options
- * @returns HTML string
- */
-export function getGenericIframeHtml(url: string, options: VideoExtensionOptions): string {
-	return `
-	<div class="video-container ${options.align}">
-		<iframe 
-				width="${options.width}" 
-				height="${options.height}" 
-				src="${url}" 
-				frameborder="0" 
-				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-				${options.allowFullscreen ? 'allowfullscreen' : ''}>
-		</iframe>
-	</div>
-	`;
+export function getGenericIframeNode(url: string, options: VideoExtensionOptions) {
+	const node = {
+		type: 'div',
+		data: {
+			hProperties: {
+				className: `video-container ${options.align}`,
+			},
+		},
+		children: [
+			{
+				type: 'iframe',
+				url,
+				data: {
+					hName: 'iframe',
+					hProperties: {
+						src: url,
+						width: options.width,
+						height: options.height,
+						allowfullscreen: options.allowFullscreen,
+						frameborder: 0,
+						allow: 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture',
+					},
+				},
+			},
+		],
+	};
+
+	return node as RootContent;
 }

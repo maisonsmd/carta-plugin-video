@@ -1,5 +1,5 @@
 import type { VideoExtensionOptions } from '$lib/types';
-import { getGenericIframeHtml, getSearchParams } from '$lib/utils';
+import { getGenericIframeNode, getSearchParams } from '$lib/utils';
 
 /**
  * Get the YouTube video ID from a YouTube video URL or ID.
@@ -18,7 +18,7 @@ function getVideoId(videoIdOrUrl: string): string {
  * @param options YouTube options
  * @returns HTML string
  */
-export function render(videoIdOrUrl: string, options: VideoExtensionOptions): string {
+export function render(videoIdOrUrl: string, options: VideoExtensionOptions) {
 	const videoId = getVideoId(videoIdOrUrl);
 	const parameters = getSearchParams(videoIdOrUrl);
 
@@ -53,5 +53,5 @@ export function render(videoIdOrUrl: string, options: VideoExtensionOptions): st
 	const host = options.noCookie ? 'https://www.youtube-nocookie.com' : 'https://www.youtube.com';
 	const url = `${host}/embed/${videoId}?${params.toString()}`;
 
-	return getGenericIframeHtml(url, options);
+	return getGenericIframeNode(url, options);
 }

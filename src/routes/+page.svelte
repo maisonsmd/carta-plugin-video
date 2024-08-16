@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Carta, CartaEditor } from 'carta-md';
+	import { Carta, MarkdownEditor } from 'carta-md';
 	import 'carta-md/default.css';
 
 	import { video } from '$lib';
@@ -7,6 +7,7 @@
 
 	const carta = new Carta({
 		extensions: [video()],
+		sanitizer: false,
 	});
 
 	let value = `
@@ -27,7 +28,7 @@ Or video URL
 </svelte:head>
 
 <main>
-	<CartaEditor {carta} {value} />
+	<MarkdownEditor {carta} {value} />
 </main>
 
 <style>
@@ -40,6 +41,7 @@ Or video URL
 	:global(.carta-font-code, code) {
 		font-family: 'Fira Code', monospace;
 		font-variant-ligatures: normal;
+		font-size: 0.95rem;
 	}
 
 	:global(input, textarea, button) {
