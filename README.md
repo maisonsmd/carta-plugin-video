@@ -43,7 +43,7 @@ For custom styles, this is an example of the generated HTML:
 
 ```svelte
 <script>
-	import { Carta, CartaEditor } from 'carta-md';
+	import { Carta, MarkdownEditor } from 'carta-md';
 	import { video } from 'carta-plugin-video';
 	import 'carta-plugin-video/default.css';
 
@@ -56,7 +56,7 @@ For custom styles, this is an example of the generated HTML:
 	});
 </script>
 
-<CartaEditor {carta} />
+<MarkdownEditor {carta} />
 ```
 
 ## Usage
